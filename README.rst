@@ -90,8 +90,8 @@ the tests.::
     # Setup the virtual environment
     $ virtualenv test_env
     $ source test_env/bin/activate
-    $ pip3 install -r requirements.txt
+    $ pip3 install -r test_requirements.txt
 
     # Run the tests
     $ cd tests
-    $ python3 tests/manage.py test
+    $ python3 manage.py test

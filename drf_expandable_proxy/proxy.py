@@ -1,6 +1,6 @@
 from django.utils.functional import cached_property
 
-from rest_framework.serializers import BaseSerializer
+from rest_framework.serializers import BaseSerializer, ListSerializer
 
 
 class ExpandableProxyMetaClass(type):
@@ -66,5 +66,12 @@ class ExpandableProxy(BaseSerializer, metaclass=ExpandableProxyMetaClass):
     def level(self):
         root, level = self, -1  # ExpandableProxy can never be the root, hence -1
         while root.parent is not None:
-            root, level = root.parent, level + 1
+            root = root.parent
+
+            # When passing many=True to a serializer DRF non-transparently
+            # adds a ListSerializer to the parent chain. If we do not account
+            # for this ExpandableProxy would behave differently for list and
+            # retrieve calls.
+            if not isinstance(root, ListSerializer):
+                level = level + 1
         return level

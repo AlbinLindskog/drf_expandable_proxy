@@ -14,6 +14,7 @@ class SerializationTestCase(TestCase):
         self.ice_cream = IceCream.objects.create(order=self.order)
         self.scoop = Scoop.objects.create(flavor=self.flavor, ice_cream=self.ice_cream, size=2)
         self.url = reverse('scoop-detail', args=[self.scoop.id])
+        self.list_url = reverse('scoop-list')
 
     def test_not_expanded(self):
         response = self.client.get(self.url)
@@ -70,6 +71,41 @@ class SerializationTestCase(TestCase):
                 'with_waffle': self.ice_cream.with_waffle
             },
         }
+        self.assertEqual(response.json(), expected)
+
+    def test_list(self):
+        """
+        We need a separate test case for list vs. retrieve as listing
+        non-transparantly adds another node to the parent chain, a
+        ListSerializer.
+        """
+        response = self.client.get(self.list_url)
+        expected = [
+            {
+                'id': self.scoop.id,
+                'size': self.scoop.size,
+                'flavor': self.flavor.id,
+                'ice_cream': self.ice_cream.id
+            }
+        ]
+        self.assertEqual(response.json(), expected)
+
+    def test_list_expanded(self):
+        """
+        See SerializationTestCase.test_list.
+        """
+        response = self.client.get(self.list_url+'?expand=flavor')
+        expected = [
+            {
+                'id': self.scoop.id,
+                'size': self.scoop.size,
+                'flavor': {
+                    'id': self.flavor.id,
+                    'flavor': self.flavor.flavor
+                },
+                'ice_cream': self.ice_cream.id,
+            }
+        ]
         self.assertEqual(response.json(), expected)
 
 
