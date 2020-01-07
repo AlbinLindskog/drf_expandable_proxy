@@ -57,6 +57,9 @@ class ExpandableProxy(BaseSerializer, metaclass=ExpandableProxyMetaClass):
 
     @cached_property
     def expanded(self):
+        if not 'request' in self.context:
+            return False
+        
         query_params = self.context['request'].query_params.getlist(self.query_param)
         split_params = [param.split('.') for param in query_params]
         level_params = [param[self.level] for param in split_params if len(param) > self.level]
