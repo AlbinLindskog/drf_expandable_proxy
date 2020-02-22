@@ -10,7 +10,7 @@ class ExpandableProxyMetaClass(type):
     Field, we want it to proxy the methods of the underlying field/serializer,
     so we use this meta class to rebind the methods.
     """
-    proxied_methods = ['to_internal_value', 'to_representation', 'update', 'create']
+    proxied_methods = ['to_internal_value', 'to_representation', 'update', 'create', 'run_validation']
 
     @staticmethod
     def lazy_ref(method_name):
