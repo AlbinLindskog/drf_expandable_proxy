@@ -12,7 +12,7 @@ class WritableNestedMixin:
     
     def nested_create(self, validated_data):
         for field_name, field in self.fields.items():
-            if not field.read_only and isinstance(field, ExpandableProxy) and field.expanded:
+            if (isinstance(field, ExpandableProxy) and field.expanded) and not (field.read_only or field.default):
 
                 validated_data[field_name] = self.fields[field_name].create(
                     validated_data=validated_data.pop(field_name)
