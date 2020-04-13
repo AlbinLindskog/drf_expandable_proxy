@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='Django restframework expandable proxy',
-    version='0.0.2',
+    version='0.0.3',
     description='Expandable objects in Django restframework.',
     long_description=open('README.rst').read(),
     install_requires=[],

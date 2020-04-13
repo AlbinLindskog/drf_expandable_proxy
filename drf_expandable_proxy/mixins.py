@@ -25,7 +25,7 @@ class WritableNestedMixin:
     
     def nested_update(self, instance, validated_data):
         for field_name, field in self.fields.items():
-            if not field.read_only and isinstance(field, ExpandableProxy) and field.expanded:
+            if (isinstance(field, ExpandableProxy) and field.expanded) and not (field.read_only or field.default):
 
                 validated_data[field_name] = self.fields[field_name].update(
                     instance=getattr(instance, field_name),
