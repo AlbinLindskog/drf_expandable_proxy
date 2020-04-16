@@ -15,7 +15,7 @@ class WritableNestedMixin:
             if (isinstance(field, ExpandableProxy) and field.expanded and not field.read_only):
 
                 validated_data[field_name] = self.fields[field_name].create(
-                    validated_data=validated_data.pop(field_name)
+                    validated_data=validated_data.get(field_name, {})
                 )
         return validated_data
 
@@ -29,7 +29,7 @@ class WritableNestedMixin:
 
                 validated_data[field_name] = self.fields[field_name].update(
                     instance=getattr(instance, field_name),
-                    validated_data=validated_data.pop(field_name)
+                    validated_data=validated_data.get(field_name, {})
                 )
         return validated_data
 
