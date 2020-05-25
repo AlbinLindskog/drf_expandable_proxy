@@ -1,7 +1,7 @@
 Django Restframework Expandable Proxy
 -------------------------------------
 ExpandableProxy is a utility object for Django RestFramework that allows
-clients to expand primitive fields into nested models, based on URL
+clients to expand primitive fields into nested objects, based on URL
 parameters.::
 
     import requests
@@ -66,7 +66,7 @@ the 'expanded' property.::
 
         @property
         def expanded(self):
-            return request.method == 'GET'
+            return self.context['request'].method == 'GET'
 
 Expansion on create or update
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
