@@ -22,8 +22,8 @@ class ExpandableProxy(Field):
         """
         ExtandableProxy needs to inherit from Field, so it's auto registered by
         the serializer metaclass. However, we don't want it to inherit the
-        methods from Field, we want it to proxy the methods of the underlying
-        field/serializer, so we use this __getattr__ trick.
+        methods or attributes from Field, we want it to proxy the methods of
+        the underlying field/serializer, so we override __getattribute__.
         """
         if object.__getattribute__(self, 'proxied') and name not in ['proxied', 'expanded', 'level']:
             return getattr(object.__getattribute__(self, 'proxied'), name)
