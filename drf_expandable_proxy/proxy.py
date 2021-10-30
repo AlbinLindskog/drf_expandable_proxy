@@ -37,7 +37,7 @@ class ExpandableProxy(Field):
 
     @cached_property
     def expanded(self):
-        if not 'request' in self.context:
+        if not self.context.get('request', None):
             return False
 
         query_params = self.context['request'].query_params.getlist(self.query_param)
