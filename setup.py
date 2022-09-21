@@ -11,4 +11,5 @@ setup(
     author_email='albin@zerebra.com',
     url='https://github.com/albinlindskog/drf_expandable_proxy',
     zip_safe=True,
+    license_files = ('license',),
 )
